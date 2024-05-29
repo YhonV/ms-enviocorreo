@@ -1,0 +1,11 @@
+package ms.envio.correo.main.modelo;
+
+import java.util.Map;
+
+public class CuerpoCorreo {
+	private String contenido;
+	private String tipo;
+	private Map<String,String> imagenes;
+	
+	
+}

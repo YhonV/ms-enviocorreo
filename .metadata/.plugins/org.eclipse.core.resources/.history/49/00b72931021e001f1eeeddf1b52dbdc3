@@ -1,0 +1,36 @@
+package ms.envio.correo.main.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@RestController
+public class Controller {
+	
+	private static final Logger log = LoggerFactory.getLogger(Controller.class);
+	
+	@RequestMapping(value = {"/envioCorreo"}, method = {RequestMethod.POST}, produces = {"application/json"})
+	@ResponseBody
+	public RespuestaServicioVO enviarCorrreo(@RequestBody EntradaEnvioCorreoVO entrada) {
+	    LOGGER.info("Ingreso llamada con datos de entrada: " + entrada.toString());
+	    RespuestaServicioVO respuesta = new RespuestaServicioVO();
+	    try {
+	      if (!helper.validarDataEntrada(entrada)) {
+	        respuesta.setCodigoRespuesta(2);
+	        respuesta.setMensajeRespuesta("Error datos de entrada");
+	      } else if (!helper.enviarCorreo(entrada)) {
+	        respuesta.setCodigoRespuesta(1);
+	        respuesta.setMensajeRespuesta("Error al enviar e-mail");
+	      } else {
+	        respuesta.setCodigoRespuesta(0);
+	        respuesta.setMensajeRespuesta("Env&iacute;o e-mail correcto");
+	      } 
+	    } catch (SQLException e) {
+	      respuesta.setCodigoRespuesta(1);
+	      respuesta.setMensajeRespuesta("Error al enviar e-mail");
+	    } 
+	    return respuesta;
+	  }

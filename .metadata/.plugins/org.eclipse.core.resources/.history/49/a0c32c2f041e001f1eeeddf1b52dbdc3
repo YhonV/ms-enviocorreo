@@ -1,0 +1,16 @@
+spring.application.name=ms-enviocorreo
+
+# IP de servidor SMTP el cual envía correspondencia
+servidor_smtp=XXXXXX
+
+# Usuario de servicio SMTP
+usuario_correo=XXXXXX
+
+# Contraseña de usuario de servicio SMTP
+pass_correo=XXXXXX
+
+# Puerto de servicio de correo SMTP
+puerto_correo=XXXXXX
+
+# Correo correspondiente al remitente del correo enviado
+from_correo=XXXXXXX

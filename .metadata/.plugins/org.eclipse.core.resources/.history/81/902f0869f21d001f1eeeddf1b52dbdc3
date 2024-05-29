@@ -1,0 +1,5 @@
+package ms.envio.correo.main.util;
+
+public class EntryPoint {
+
+}

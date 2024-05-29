@@ -1,0 +1,15 @@
+package ms.envio.correo.main.modelo;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class Adjunto {
+	private String nombre;
+	private String archivoBase64;
+	private String extension;
+}

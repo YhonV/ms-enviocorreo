@@ -1,0 +1,90 @@
+package ms.envio.correo.main.service;
+
+import java.util.Date;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.mail.Address;
+import jakarta.mail.Message;
+import jakarta.mail.Session;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import ms.envio.correo.main.modelo.EntradaEnvioCorreo;
+import ms.envio.correo.main.util.EntryPoint;
+
+public class EnvioCorreoImpl implements IEnvioCorreo{
+
+	private static final Logger log = LoggerFactory.getLogger(EnvioCorreoImpl.class);
+	
+	private static final String TIPO_TXT = "TXT";
+	
+	private static final String TIPO_HTML = "HTML";
+
+	private static final String ADJUNTO_TIPO_PDF = "PDF";
+	  
+	private static final String ADJUNTO_TIPO_ZIP = "ZIP";
+	
+	@Autowired
+	private EntryPoint entryPoint;
+	
+	@Override
+	public boolean validarData(EntradaEnvioCorreo entrada) {
+		try {
+			log.info("Ingresando a validación");
+			
+			if(entrada.getDestinatarios() == null &&
+				entrada.getDestinatarios().isEmpty() ||
+				entrada.getCuerpo() == null ||
+				entrada.getAsunto().equals("")) {
+				log.info("No cumples con los parametros de entrada");
+				return false;
+			}
+		}catch (Exception e) {
+			log.info("Error en validaciones de enrtada: "+e.getMessage());
+		}
+		log.info("Parametros completos");
+		return true;
+	}
+
+	@Override
+	public boolean enviarCorreo(EntradaEnvioCorreo entrada) {
+		log.info("Comienza envío de correo");
+		Properties props = System.getProperties();
+		String host = entryPoint.getHost();
+		String user = entryPoint.getUsernameMail();
+		String pass = entryPoint.getPassword();
+		String from = entryPoint.getFromMail();
+		
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		
+		Session session = Session.getDefaultInstance(props,null);
+		MimeMessage message = new MimeMessage(session);
+		
+		try {
+			log.info("Agregando datos en clase mensaje");
+			log.info("Agregando from");
+			message.setFrom((Address) new InternetAddress(from));
+			log.info("Agregando destinatarios");
+			for (String to : entrada.getDestinatarios()) {
+				message.addRecipient(Message.RecipientType.TO, (Address) new InternetAddress(to));
+			}
+			log.info("Agregando subject");
+			message.setSubject(entrada.getAsunto());
+			log.info("Agregando fecha actual");
+			message.setSentDate(new Date());
+			
+			return true;
+		}catch (AddressException ae) {
+			log.info(ae.getMessage());
+		}
+		
+		return false;
+	}
+
+}

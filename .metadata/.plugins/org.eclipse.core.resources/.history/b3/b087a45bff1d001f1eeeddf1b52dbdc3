@@ -1,0 +1,37 @@
+package ms.envio.correo.main.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import ms.envio.correo.main.modelo.EntradaEnvioCorreo;
+import ms.envio.correo.main.util.EntryPoint;
+
+public class EnvioCorreoImpl implements IEnvioCorreo{
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(EnvioCorreoImpl.class);
+	
+	private static final String TIPO_TXT = "TXT";
+	
+	private static final String TIPO_HTML = "HTML";
+
+	private static final String ADJUNTO_TIPO_PDF = "PDF";
+	  
+	private static final String ADJUNTO_TIPO_ZIP = "ZIP";
+	
+	@Autowired
+	private EntryPoint entryPoint;
+	
+	@Override
+	public boolean validarData(EntradaEnvioCorreo entrada) {
+		
+		return false;
+	}
+
+	@Override
+	public boolean enviarCorreo(EntradaEnvioCorreo entrada) {
+		
+		return false;
+	}
+
+}
